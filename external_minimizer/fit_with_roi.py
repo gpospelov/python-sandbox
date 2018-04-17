@@ -1,81 +1,84 @@
 """
-Prototype of fitting with ROI using external minimizer.
+Prototype of SimulationBuilder and FitObject to work together with
+external minimizer.
 """
 import bornagain as ba
 from bornagain import nm, deg, angstrom
 import numpy as np
 import lmfit
+from simulation_builder import SimulationBuilder
+from fit_objects import FitObject
+from matplotlib import pyplot as plt
 
 
-class SimulationBuilder:
+class Plotter:
+    def __init__(self, fit_object):
+
+        self.m_fit_object = fit_object
+        self._fig = plt.figure(figsize=(10.25, 7.69))
+        self._fig.canvas.draw()
+
+    def make_subplot(self, nplot):
+        plt.subplot(2, 2, nplot)
+        plt.subplots_adjust(wspace=0.2, hspace=0.2)
+
+    def reset(self):
+        self._fig.clf()
+
+    def plot(self, params, iter, residual):
+        self.reset()
+
+        sim_data = self.m_fit_object.simulationResult()
+        real_data = self.m_fit_object.experimentalData()
+        diff = self.m_fit_object.relativeDifference()
+
+        # same limits for both plots
+        arr = real_data.array()
+        zmax = np.amax(arr)
+        zmin = zmax * 1e-6
+
+        self.make_subplot(1)
+        ba.plot_colormap(real_data, title="Real data",
+                          zmin=zmin, zmax=zmax, zlabel='')
+
+        self.make_subplot(2)
+        ba.plot_colormap(sim_data, title="Simulated data",
+                          zmin=zmin, zmax=zmax, zlabel='')
+
+        self.make_subplot(3)
+        ba.plot_colormap(diff, title="Relative difference",
+                          zmin=1e-03, zmax=10, zlabel='')
+
+        self.make_subplot(4)
+        plt.title('Parameters')
+        plt.axis('off')
+        plt.text(0.01, 0.85, "Iterations  {:d}". format(iter))
+        for index, p in enumerate(params):
+            print(index, p)
+            plt.text(0.01, 0.55 - index * 0.1,
+                     '{:30.30s}: {:6.3f}'.format(p, params[p].value))
+
+        plt.tight_layout()
+        plt.pause(0.03)
+
+
+
+class SimulationROIBuilder(SimulationBuilder):
     def __init__(self):
-        self.radius = 5.0*nm
-        self.lattice_length = 10.0*nm
+        super(SimulationROIBuilder, self).__init__()
 
     def build_simulation(self, params=None):
-        if params:
-            self.radius = params["radius"].value
-            self.lattice_length = params["length"].value
+        sim = super(SimulationROIBuilder, self).build_simulation(params)
+        sim.setRegionOfInterest(-0.5*deg, 0.2*deg, 0.5*deg, 1.8*deg)
 
-        print("radius: {:6.3f} length:{:6.3f}".format(self.radius, self.lattice_length))
-
-        simulation = ba.GISASSimulation()
-        simulation.setDetectorParameters(100, -1.0 * deg, 1.0 * deg,
-                                         100, 0.0 * deg, 2.0 * deg)
-        simulation.setBeamParameters(1.0 * angstrom, 0.2 * deg, 0.0 * deg)
-        simulation.setBeamIntensity(1e+08)
-        simulation.setSample(self.build_sample())
-        return simulation
-
-    def build_sample(self):
-        m_air = ba.HomogeneousMaterial("Air", 0.0, 0.0)
-        m_substrate = ba.HomogeneousMaterial("Substrate", 6e-6, 2e-8)
-        m_particle = ba.HomogeneousMaterial("Particle", 6e-4, 2e-8)
-
-        sphere_ff = ba.FormFactorFullSphere(self.radius)
-        sphere = ba.Particle(m_particle, sphere_ff)
-        particle_layout = ba.ParticleLayout()
-        particle_layout.addParticle(sphere)
-
-        interference = ba.InterferenceFunction2DLattice.createHexagonal(self.lattice_length)
-        pdf = ba.FTDecayFunction2DCauchy(10 * nm, 10 * nm)
-        interference.setDecayFunction(pdf)
-
-        particle_layout.setInterferenceFunction(interference)
-
-        air_layer = ba.Layer(m_air)
-        air_layer.addLayout(particle_layout)
-        substrate_layer = ba.Layer(m_substrate, 0)
-        multi_layer = ba.MultiLayer()
-        multi_layer.addLayer(air_layer)
-        multi_layer.addLayer(substrate_layer)
-        return multi_layer
-
-
-class FitObject:
-    def __init__(self):
-        self.m_simulation_builder = None
-        self.m_experimental_data = None
-        pass
-
-    def set_data(self, simulation_builder, real_data):
-        self.m_simulation_builder = simulation_builder
-        self.m_experimental_data = real_data
-
-    def evaluate(self, params):
-        simulation = self.m_simulation_builder.build_simulation(params)
-        simulation.runSimulation()
-        result = simulation.result().array().flatten()
-        exp = self.m_experimental_data.flatten()
-        res = result-exp
-        return res
+        return sim
 
 
 def create_experimental_data():
     """
     Generating "real" data by adding noise to the simulated data.
     """
-    simulation = SimulationBuilder().build_simulation()
+    simulation = SimulationROIBuilder().build_simulation()
     simulation.runSimulation()
 
     # retrieving simulated data in the form of numpy array
@@ -93,22 +96,19 @@ def run_fitting():
     real_data = create_experimental_data()
 
     fit_object = FitObject()
-    fit_object.set_data(SimulationBuilder(), real_data)
+    fit_object.set_data(SimulationROIBuilder(), real_data)
 
-    ba.ploi
+    params = lmfit.Parameters()
+    params.add('radius', value=8*nm)
+    params.add('length', value=8*nm)
 
-    # fit_object = FitObject()
-    # fit_object.set_data(SimulationBuilder(), real_data)
-    #
-    # params = lmfit.Parameters()
-    # params.add('radius', value=8*nm)
-    # params.add('length', value=8*nm)
-    #
-    # result = lmfit.minimize(fit_object.evaluate, params)
-    #
-    # result.params.pretty_print()
+    plotter = Plotter(fit_object)
 
+    result = lmfit.minimize(fit_object.evaluate, params, iter_cb=plotter.plot)
+
+    result.params.pretty_print()
 
 
 if __name__ == '__main__':
     run_fitting()
+    plt.show()

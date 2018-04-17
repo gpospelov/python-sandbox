@@ -1,5 +1,6 @@
 """
-Prototype of SimulationBuilder to work together with external minimizer
+Prototype of SimulationBuilder and FitObject to work together with
+external minimizer.
 """
 import bornagain as ba
 from bornagain import nm, deg, angstrom
