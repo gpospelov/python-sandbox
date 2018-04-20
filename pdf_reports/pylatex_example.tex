@@ -1,0 +1,81 @@
+\documentclass[landscape]{article}%
+\usepackage[T1]{fontenc}%
+\usepackage[utf8]{inputenc}%
+\usepackage{lmodern}%
+\usepackage{textcomp}%
+\usepackage{lastpage}%
+\usepackage[margin=0.55in]{geometry}%
+\usepackage{graphicx}%
+\usepackage{ragged2e}%
+%
+%
+%
+\begin{document}%
+\normalsize%
+\section{A section}%
+\label{sec:A section}%
+Some regular text and some %
+\textit{italic text. }%
+
+
+\begin{figure}[h!]%
+\centering%
+\includegraphics[width=0.75\textwidth]{meso.png}%
+\end{figure}
+
+%
+\newpage%
+\section{A section 2}%
+\label{sec:A section 2}%
+Some regular text and some %
+\textit{italic text. }%
+
+
+\begin{figure}[h!]%
+\centering%
+\includegraphics[width=0.75\textwidth]{meso.png}%
+\end{figure}
+
+%
+\newpage%
+\begin{minipage}{0.3\textwidth}%
+\begin{tabular}{l l}%
+\hline%
+\hline%
+& \\%
+\hline%
+SimulationBuilder& \\%
+m\_beam\_intensity               & 6.1e+12\\%
+m\_beam\_wavelength              & 0.1770\\%
+m\_inclination\_angle            & 0.4\\%
+m\_time\_spend                   & 0.65\\%
+\hline%
+SampleBuilderVer1& \\%
+m\_average\_layer\_thickness      & 200.0\\%
+m\_roughness                    & 6.0\\%
+m\_surface\_filling\_ratio        & 0.25\\%
+\hline%
+SingleMesoFactory& \\%
+\hline%
+MesoCrystalBuilder& \\%
+\hline%
+MesoParameters& \\%
+m\_lattice\_length\_a             & 12.45\\%
+m\_lattice\_length\_c             & 31.0\\%
+m\_meso\_height                  & 200.0\\%
+m\_meso\_radius                  & 800.0\\%
+m\_nanoparticle\_radius          & 5.0\\%
+m\_rotation\_z                   & 0\\%
+m\_sigma\_lattice\_length\_a       & 0.5\\%
+m\_sigma\_meso\_height            & 20.0\\%
+m\_sigma\_meso\_radius            & 20.0\\%
+m\_sigma\_nanoparticle\_radius    & 0.3\\%
+\hline%
+& \\%
+\end{tabular}%
+\end{minipage}%
+\begin{minipage}{0.6\textwidth}%
+\includegraphics[scale=0.5]{meso.png}%
+\end{minipage}%
+\newpage%
+\end{document}
