@@ -3,8 +3,10 @@ Generation of PDF files using 'pylatex'
 https://jeltef.github.io/PyLaTeX/current/index.html
 """
 
-from pylatex import Document, Section, Subsection, Command, Figure, NewPage, MiniPage, SubFigure, Tabular, SmallText
+import pylatex as pl
 from pylatex.utils import italic, NoEscape
+from pylatex.utils import bold
+
 
 
 data = """
@@ -32,11 +34,17 @@ m_sigma_meso_radius            : 20.0
 m_sigma_nanoparticle_radius    : 0.3
 """
 
+def mono(s):
+    return NoEscape(r'\texttt{' + s + '}')
+
+def tiny(s):
+    return NoEscape(r'\tiny{' + s + '}')
+
 
 class PDFReport:
     def __init__(self):
-        geometry_options = {"margin": "0.55in"}
-        self.m_doc = Document("pylatex_example", document_options="landscape",
+        geometry_options = {"margin": "0.5in"}
+        self.m_doc = pl.Document("pylatex_example", document_options="landscape",
                               geometry_options=geometry_options)
         self.fill_document()
 
@@ -47,46 +55,50 @@ class PDFReport:
 
     def add_page1(self):
         doc = self.m_doc
-        with doc.create(Section('A section')):
+        with doc.create(pl.Section('A section')):
             doc.append('Some regular text and some ')
             doc.append(italic('italic text. '))
 
-            with doc.create(Figure(position='h!')) as kitten_pic:
+            with doc.create(pl.Figure(position='h!')) as kitten_pic:
                 kitten_pic.add_image("meso.png", width=NoEscape(r'0.75\textwidth'))
 
-        doc.append(NewPage())
+        doc.append(pl.NewPage())
 
     def add_page2(self):
         doc = self.m_doc
-        with doc.create(Section('A section 2')):
+        with doc.create(pl.Section('A section 2')):
             doc.append('Some regular text and some ')
             doc.append(italic('italic text. '))
 
-            with doc.create(Figure(position='h!')) as kitten_pic:
+            with doc.create(pl.Figure(position='h!')) as kitten_pic:
                 kitten_pic.add_image("meso.png", width=NoEscape(r'0.75\textwidth'))
 
-        doc.append(NewPage())
+        doc.append(pl.NewPage())
 
     def add_page3(self):
         doc = self.m_doc
-        with doc.create(MiniPage(width=r"0.3\textwidth")):
+        doc.append("Influence of mesocrystal height")
+        doc.append(pl.VerticalSpace("2cm"))
+        doc.append("\n")
+        with doc.create(pl.MiniPage(width=r"0.2\textwidth", height=r"0.25\textwidth", content_pos='t')):
             lines = data.split("\n")
-            with doc.create(Tabular('l l')) as table:
-                # doc.append(Command('smallsize'))
-                table.add_hline()
+            with doc.create(pl.Tabular('l l', row_height=0.8)) as table:
+                myfont = [mono, tiny]
                 for l in lines:
                     parts = l.split(":")
                     print(parts)
                     if len(parts) == 2:
-                        table.add_row(parts[0], parts[1])
-                    else:
+                        table.add_row(parts[0], parts[1], mapper=myfont)
+                    elif len(parts) == 1:
                         table.add_hline()
-                        table.add_row((l, " "))
+                        table.add_row((l, " "), mapper=myfont)
+            doc.append("\n")
 
-        with doc.create(MiniPage(width=r"0.6\textwidth")):
-            doc.append(Command('includegraphics', options='scale=0.5', arguments='meso.png'))
+        with doc.create(pl.MiniPage(width=r"0.8\textwidth", height=r"0.25\textwidth", content_pos='t')):
+            doc.append(pl.Command('includegraphics', options='scale=0.8', arguments='meso.png'))
+            doc.append("\n")
 
-        doc.append(NewPage())
+        doc.append(pl.NewPage())
 
 
     def generate_pdf(self):

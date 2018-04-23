@@ -4,7 +4,7 @@
 \usepackage{lmodern}%
 \usepackage{textcomp}%
 \usepackage{lastpage}%
-\usepackage[margin=0.55in]{geometry}%
+\usepackage[margin=0.5in]{geometry}%
 \usepackage{graphicx}%
 \usepackage{ragged2e}%
 %
@@ -38,44 +38,52 @@ Some regular text and some %
 
 %
 \newpage%
-\begin{minipage}{0.3\textwidth}%
+Influence of mesocrystal height%
+\vspace*{2cm}%
+\newline%
+%
+\begin{minipage}[0.25\textwidth]{0.2\textwidth}%
+\renewcommand{\arraystretch}{0.8}%
 \begin{tabular}{l l}%
 \hline%
+\tiny{\texttt{}}&\tiny{\texttt{ }}\\%
 \hline%
-& \\%
+\tiny{\texttt{SimulationBuilder}}&\tiny{\texttt{ }}\\%
+\tiny{\texttt{m\_beam\_intensity               }}&\tiny{\texttt{ 6.1e+12}}\\%
+\tiny{\texttt{m\_beam\_wavelength              }}&\tiny{\texttt{ 0.1770}}\\%
+\tiny{\texttt{m\_inclination\_angle            }}&\tiny{\texttt{ 0.4}}\\%
+\tiny{\texttt{m\_time\_spend                   }}&\tiny{\texttt{ 0.65}}\\%
 \hline%
-SimulationBuilder& \\%
-m\_beam\_intensity               & 6.1e+12\\%
-m\_beam\_wavelength              & 0.1770\\%
-m\_inclination\_angle            & 0.4\\%
-m\_time\_spend                   & 0.65\\%
+\tiny{\texttt{SampleBuilderVer1}}&\tiny{\texttt{ }}\\%
+\tiny{\texttt{m\_average\_layer\_thickness      }}&\tiny{\texttt{ 200.0}}\\%
+\tiny{\texttt{m\_roughness                    }}&\tiny{\texttt{ 6.0}}\\%
+\tiny{\texttt{m\_surface\_filling\_ratio        }}&\tiny{\texttt{ 0.25}}\\%
 \hline%
-SampleBuilderVer1& \\%
-m\_average\_layer\_thickness      & 200.0\\%
-m\_roughness                    & 6.0\\%
-m\_surface\_filling\_ratio        & 0.25\\%
+\tiny{\texttt{SingleMesoFactory}}&\tiny{\texttt{ }}\\%
 \hline%
-SingleMesoFactory& \\%
+\tiny{\texttt{MesoCrystalBuilder}}&\tiny{\texttt{ }}\\%
 \hline%
-MesoCrystalBuilder& \\%
+\tiny{\texttt{MesoParameters}}&\tiny{\texttt{ }}\\%
+\tiny{\texttt{m\_lattice\_length\_a             }}&\tiny{\texttt{ 12.45}}\\%
+\tiny{\texttt{m\_lattice\_length\_c             }}&\tiny{\texttt{ 31.0}}\\%
+\tiny{\texttt{m\_meso\_height                  }}&\tiny{\texttt{ 200.0}}\\%
+\tiny{\texttt{m\_meso\_radius                  }}&\tiny{\texttt{ 800.0}}\\%
+\tiny{\texttt{m\_nanoparticle\_radius          }}&\tiny{\texttt{ 5.0}}\\%
+\tiny{\texttt{m\_rotation\_z                   }}&\tiny{\texttt{ 0}}\\%
+\tiny{\texttt{m\_sigma\_lattice\_length\_a       }}&\tiny{\texttt{ 0.5}}\\%
+\tiny{\texttt{m\_sigma\_meso\_height            }}&\tiny{\texttt{ 20.0}}\\%
+\tiny{\texttt{m\_sigma\_meso\_radius            }}&\tiny{\texttt{ 20.0}}\\%
+\tiny{\texttt{m\_sigma\_nanoparticle\_radius    }}&\tiny{\texttt{ 0.3}}\\%
 \hline%
-MesoParameters& \\%
-m\_lattice\_length\_a             & 12.45\\%
-m\_lattice\_length\_c             & 31.0\\%
-m\_meso\_height                  & 200.0\\%
-m\_meso\_radius                  & 800.0\\%
-m\_nanoparticle\_radius          & 5.0\\%
-m\_rotation\_z                   & 0\\%
-m\_sigma\_lattice\_length\_a       & 0.5\\%
-m\_sigma\_meso\_height            & 20.0\\%
-m\_sigma\_meso\_radius            & 20.0\\%
-m\_sigma\_nanoparticle\_radius    & 0.3\\%
-\hline%
-& \\%
+\tiny{\texttt{}}&\tiny{\texttt{ }}\\%
 \end{tabular}%
+\newline%
+%
 \end{minipage}%
-\begin{minipage}{0.6\textwidth}%
-\includegraphics[scale=0.5]{meso.png}%
+\begin{minipage}[0.25\textwidth]{0.8\textwidth}%
+\includegraphics[scale=0.8]{meso.png}%
+\newline%
+%
 \end{minipage}%
 \newpage%
 \end{document}
