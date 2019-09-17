@@ -1,3 +1,6 @@
+"""
+FileFinder class.
+"""
 import glob
 
 
@@ -9,7 +12,9 @@ class FileFinder:
         :param max_file_count: Maximum number of files to return to the user.
         """
         self.file_name_pattern = file_name_pattern
-        self.max_file_count = max_file_count
+        self.max_file_count = len(file_name_pattern) if not max_file_count else max_file_count
+        if self.max_file_count <= 0:
+            raise ValueError("Max number of requested files should be positive")
         pass
 
     def get_files(self):
@@ -20,5 +25,6 @@ class FileFinder:
         files = list(glob.glob(self.file_name_pattern))
         if not len(files):
             raise ValueError("No files found according to '{}' pattern".format(self.file_name_pattern))
-        max_length = max(len(files), self.max_file_count)
+
+        max_length = min(len(files), self.max_file_count)
         return files[0:max_length]
