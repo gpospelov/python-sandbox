@@ -1,5 +1,5 @@
 """
-FileFinder class.
+FileFinder class: finds files on disk corresponding to given pattern.
 """
 import glob
 
@@ -11,20 +11,22 @@ class FileFinder:
         :param file_name_pattern: File name pattern for glob expression.
         :param max_file_count: Maximum number of files to return to the user.
         """
-        self.file_name_pattern = file_name_pattern
-        self.max_file_count = len(file_name_pattern) if not max_file_count else max_file_count
-        if self.max_file_count <= 0:
+        if max_file_count and max_file_count <= 0:
             raise ValueError("Max number of requested files should be positive")
-        pass
+
+        self.files = list(glob.glob(file_name_pattern))
+        if not len(self.files):
+            raise ValueError("No files found according to '{}' pattern".format(file_name_pattern))
+
+        self.max_file_count = min(len(self.files), max_file_count) if max_file_count else len(self.files)
+
 
     def get_files(self):
         """
         Returns list of files found.
         :return: List of full file names.
         """
-        files = list(glob.glob(self.file_name_pattern))
-        if not len(files):
-            raise ValueError("No files found according to '{}' pattern".format(self.file_name_pattern))
+        return self.files[0:self.max_file_count]
 
-        max_length = min(len(files), self.max_file_count)
-        return files[0:max_length]
+    def __len__(self):
+        return self.max_file_count

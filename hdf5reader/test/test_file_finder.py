@@ -26,18 +26,19 @@ class TestFileFinder(unittest.TestCase):
         self.assertRaises(ValueError, FileFinder, "test_pattern", -1)
 
     def test_wrong_pattern(self):
-        finder = FileFinder("wrong_pattern*")
-        self.assertRaises(ValueError, finder.get_files)
+        self.assertRaises(ValueError, FileFinder, "non-esixting-pattern")
 
     def test_find_files(self):
         finder = FileFinder("test_*.tmp")
         files = finder.get_files()
         self.assertEqual(files, TEST_FILE_NAMES)
+        self.assertEqual(len(finder), 3)
 
     def test_find_files_subset(self):
         finder = FileFinder("test_*.tmp", 2)
         files = finder.get_files()
         self.assertEqual(files, TEST_FILE_NAMES[0:2])
+        self.assertEqual(len(finder), 2)
 
 
 if __name__ == '__main__':
