@@ -54,12 +54,14 @@ if __name__ == '__main__':
     print()
 
     start = time.time()
+    print("Constructing dataset...")
     dataset_finder = DatasetFinder(file_finder.get_files())
-    print("Time to construct dataset {:.3f}".format(time.time() - start))
+    print("Done. Time to construct dataset {:.3f}".format(time.time() - start))
 
     start = time.time()
+    print("Loading views...")
     dataset_finder.load_dataset_views()
-    print("Time to load views {:.3f}".format(time.time() - start))
+    print("Done. Time to load views {:.3f}".format(time.time() - start))
 
     start = time.time()
     views = dataset_finder.get_datasets()
