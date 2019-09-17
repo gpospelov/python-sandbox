@@ -20,7 +20,6 @@ class FileFinder:
 
         self.max_file_count = min(len(self.files), max_file_count) if max_file_count else len(self.files)
 
-
     def get_files(self):
         """
         Returns list of files found.

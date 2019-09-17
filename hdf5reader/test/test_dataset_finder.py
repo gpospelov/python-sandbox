@@ -2,7 +2,6 @@
 Unit tests for DatasetFinder class.
 """
 import unittest
-from hdf5reader.file_finder import FileFinder
 from hdf5reader.dataset_finder import DatasetFinder
 import h5py
 

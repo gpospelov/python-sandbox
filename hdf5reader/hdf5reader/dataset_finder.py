@@ -38,11 +38,17 @@ class DatasetFinder:
         self.datasets = list()
 
     def load_dataset_views(self):
+        """
+        Load all views to hdf5 datasets into the list.
+        """
         for h5file in self.hdf5_files:
             for key in get_datasets(h5file):
                 self.datasets.append(h5file[key])
 
     def get_datasets(self):
+        """
+        Returns list of existing views to hdf5 datasets.
+        """
         if not len(self.datasets):
             self.load_dataset_views()
 
@@ -51,7 +57,6 @@ class DatasetFinder:
 
 if __name__ == '__main__':
     file_finder = FileFinder("/mnt/space1/pospelov/data/d3hack/ver1/hdf5/datam_*.h5", 100)
-    print()
 
     start = time.time()
     print("Constructing dataset...")
@@ -66,6 +71,3 @@ if __name__ == '__main__':
     start = time.time()
     views = dataset_finder.get_datasets()
     print("Time to get datasets {:.3f}, size {}".format(time.time() - start, len(views)))
-
-
-
