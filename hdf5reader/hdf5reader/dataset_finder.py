@@ -34,16 +34,24 @@ class DatasetFinder:
     Finds hdf5 datasets in collection of hdf5 files. Files remains open for later dataset usage.
     """
     def __init__(self, hdf5_file_names):
+        print("DatasetFinder> Starting initialization ...")
+        start = time.time()
         self.hdf5_files = [h5py.File(filename, "r") for filename in hdf5_file_names]
         self.datasets = list()
+        print("DatasetFinder> ... done in {:.3f}, {} file(s) total."
+              .format(time.time() - start, len(self.hdf5_files)))
 
     def load_dataset_views(self):
         """
         Load all views to hdf5 datasets into the list.
         """
+        print("DatasetFinder> Loading dataset views ...")
+        start = time.time()
         for h5file in self.hdf5_files:
             for key in get_datasets(h5file):
                 self.datasets.append(h5file[key])
+        print("DatasetFinder> ... done in {:.3f}, {} datasets total."
+              .format(time.time() - start, len(self.datasets)))
 
     def get_datasets(self):
         """
