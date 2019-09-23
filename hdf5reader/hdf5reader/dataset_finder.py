@@ -2,7 +2,7 @@
 DatasetFinder class: finds datasets in collection of hdf5 files.
 """
 import h5py
-from hdf5reader.file_finder import FileFinder
+from file_finder import FileFinder
 import time
 
 

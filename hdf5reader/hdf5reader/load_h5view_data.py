@@ -2,9 +2,9 @@
 Collection of functions to load/process hdf5 dataset data
 """
 import numpy as np
-from hdf5reader.dataset_finder import DatasetFinder
-from hdf5reader.dataset_finder import DatasetFinderV2
-from hdf5reader.file_finder import FileFinder
+from dataset_finder import DatasetFinder
+from dataset_finder import DatasetFinderV2
+from file_finder import FileFinder
 import time
 
 
