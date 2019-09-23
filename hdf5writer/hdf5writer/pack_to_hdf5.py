@@ -1,5 +1,8 @@
 """
 Bundle multiple *.npy  and *.json files into single hdf5 file.
+
+Resulting file will contain single group '/' and collection of datasets
+with name, corresponding to npy file.
 """
 import h5py
 import click
@@ -8,11 +11,11 @@ import os
 import numpy as np
 import json
 
-INPUTDIR = "/mnt/space1/pospelov/data/d3hack/ver1/train"
+INPUTDIR = "/mnt/space1/pospelov/data/d3hack/ver1/val"
 OUTPUTDIR = "/mnt/space1/pospelov/data/d3hack/ver1/hdf5_v2"
 CHUNKSIZE = 1000
 MAXINPUTFILES = 100000
-OUTPUTNAME="datam_"
+OUTPUTNAME = "val_datam_"
 
 def get_run_number(full_file_name):
     name = os.path.basename(full_file_name)
@@ -55,6 +58,12 @@ def find_files(inputdir, maxinputfiles):
 
 
 def create_dataset(h5_file, numpy_file_name, json_file_name):
+    """
+    Create dataset in existing hdf5 file.
+    :param h5_file: HDF5 file opened for writing.
+    :param numpy_file_name: Name of file with numpy array.
+    :param json_file_name: Name of file with json attributes.
+    """
     arr = np.load(numpy_file_name).astype('float32')
     jattr = json.load(open(json_file_name))
     dset_name = os.path.basename(numpy_file_name)
@@ -70,6 +79,11 @@ def create_dataset(h5_file, numpy_file_name, json_file_name):
 def process_files(npy_files, json_files, chunksize, outputdir, outputname):
     """
     Main function to process numpy/json files.
+    :param npy_files: List of numpy files.
+    :param json_files: List of json files.
+    :param chunksize: Number of numpy/json pair to put into single output file (i.e. 1000)
+    :param outputdir: Directory for output files.
+    :param outputname: Name of output file (index and extention will be added).
     """
     file_count = len(npy_files)
     chunk_count = file_count // chunksize
