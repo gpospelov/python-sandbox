@@ -8,31 +8,15 @@ will become
 import os
 from collections import defaultdict
 from pathlib import Path
+from utils import get_files
+from utils import different_elements_count
 import re
 
-
 HEADER_LOCATION = "/home/pospelov/development/qt-mvvm/qt-mvvm/mvvm"
-SOURCE_DIR_TO_MODIFY = "/home/pospelov/development/qt-mvvm/qt-mvvm/examples"
-
-
-def find_files(dir_name):
-    """
-    Yield recursive list of files in given path
-    """
-    for subdir, dirs, files in os.walk(dir_name):
-        for filename in files:
-            yield os.path.join(subdir, filename)
-
-
-def get_files(dir_name, extension=".h"):
-    """
-    Returns list of files with given extension.
-    """
-    result = list()
-    for filename in find_files(dir_name):
-        if os.path.splitext(filename)[1] == extension:
-            result.append(filename)
-    return result
+# SOURCE_DIR_TO_MODIFY = "/home/pospelov/development/qt-mvvm/qt-mvvm/examples"
+# SOURCE_DIR_TO_MODIFY = "/home/pospelov/development/qt-mvvm/qt-mvvm/mvvm"
+SOURCE_DIR_TO_MODIFY = "/home/pospelov/development/qt-mvvm/qt-mvvm/tests"
+APPLY_MODIFICATIONS = True
 
 
 def get_source_files(dir_name):
@@ -45,7 +29,7 @@ def get_source_files(dir_name):
 def get_header_file_map(dir_name):
     """
     Return multi map of headers in given dir_name. Key contain header file name, value
-    contains list of dirs where this file was found.
+    contains list of sub folders where this file was found.
     {'setvaluecommand.h': ['mvvm/commands'], 'removeitemcommand.h': ['mvvm/commands']}
     """
     result = defaultdict(list)
@@ -70,7 +54,7 @@ def find_include_statement(line):
 
 def fix_include_statement(line, header_map):
     """
-    Replaces quote-based header statement with full-path-braced based statement.
+    Replaces quote-based header statement with full-path-braced statement.
     #include "path.h" ==> #include <mvvm/model/path.h>
     """
     name_to_include = find_include_statement(line)
@@ -78,22 +62,11 @@ def fix_include_statement(line, header_map):
         header_folders = header_map[name_to_include]
         if len(header_folders) == 1:  # require that file exist only in single folder
             str = '#include <{0}/{1}>'.format(header_folders[0], name_to_include)
-            # print(line)
-            # print(str)
-            # print("---")
+            print(line)
+            print(str)
+            print("---")
             return str
     return line
-
-
-def different_lines_count(list1, list2):
-    """
-    Returns true if two lists are the same element wise, otherwise returns False.
-    """
-    diff_count = 0
-    for x, y in zip(list1, list2):
-        if x != y:
-            diff_count += 1
-    return diff_count
 
 
 def process_file(filename, header_map):
@@ -101,8 +74,8 @@ def process_file(filename, header_map):
         lines = [line.rstrip('\n') for line in fd]
         modified_lines = [fix_include_statement(line, header_map) for line in lines]
 
-    fixed_lines = different_lines_count(lines, modified_lines)
-    if fixed_lines > 0:
+    fixed_lines = different_elements_count(lines, modified_lines)
+    if APPLY_MODIFICATIONS and fixed_lines > 0:
         with open(filename, 'w') as fd:
             for line in modified_lines:
                 fd.write(line + "\n")
