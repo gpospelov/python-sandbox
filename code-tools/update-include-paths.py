@@ -3,13 +3,13 @@ Searches C++ include directives and adds prefix to them
 
 #include "model.h"
 will become
-#include <mvvm/model/model.h"
+#include <mvvm/model/model.h>
 """
 import os
 from collections import defaultdict
 from pathlib import Path
-from utils import get_files
-from utils import different_elements_count
+from .utils import get_files
+from .utils import different_elements_count
 import re
 
 HEADER_LOCATION = "/home/pospelov/development/qt-mvvm/qt-mvvm/mvvm"

@@ -1,8 +1,8 @@
 """
 Updates header section in C++ source files
 """
-from utils import get_files
-from utils import different_elements_count
+from .utils import get_files
+from .utils import different_elements_count
 
 
 NEW_HEADER = [

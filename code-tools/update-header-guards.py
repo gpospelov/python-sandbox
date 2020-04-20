@@ -1,8 +1,8 @@
 """
 Update header guards in large C++ project basic on folder location.
 """
-from utils import get_files
-from utils import different_elements_count
+from .utils import get_files
+from .utils import different_elements_count
 from pathlib import Path
 import os
 

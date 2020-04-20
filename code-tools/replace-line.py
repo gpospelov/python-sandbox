@@ -1,8 +1,8 @@
 """
 Replace specific line in whole code base.
 """
-from utils import get_files
-from utils import different_elements_count
+from .utils import get_files
+from .utils import different_elements_count
 
 
 CONTENT_TO_REPLACE = "#include <mvvm/model/mvvm_export.h>"
