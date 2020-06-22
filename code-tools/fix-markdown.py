@@ -15,10 +15,16 @@ def fix_highlight_line(line):
     return line
 
 
-def process_file(filename):
+def fix_cookbook_line(line):
+    if "cookbook" in line:
+        line = line.replace("cookbook", "examples")
+    return line
+
+
+def process_file(filename, func):
     with open(filename, 'r') as fd:
         lines = [line.rstrip('\n') for line in fd]
-        modified_lines = [fix_highlight_line(line) for line in lines]
+        modified_lines = [func(line) for line in lines]
         if different_elements_count(lines, modified_lines) > 0:
             print(filename)
             with open(filename, 'w') as fd:
@@ -29,9 +35,16 @@ def process_file(filename):
 def fix_highlight_shortcode():
     sources = get_files(SOURCE_DIR_TO_MODIFY, ".md")
     for filename in sources:
-        process_file(filename)
+        process_file(filename, fix_highlight_line)
+
+
+def fix_cookbook():
+    sources = get_files(SOURCE_DIR_TO_MODIFY, ".md")
+    for filename in sources:
+        process_file(filename, fix_cookbook_line)
 
 
 if __name__ == '__main__':
-    fix_highlight_shortcode()
+    # fix_highlight_shortcode()
+    fix_cookbook()
 
