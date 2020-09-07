@@ -8,14 +8,18 @@ will become
 import os
 from collections import defaultdict
 from pathlib import Path
-from .utils import get_files
-from .utils import different_elements_count
+from utils import get_files
+from utils import different_elements_count
 import re
 
-HEADER_LOCATION = "/home/pospelov/development/qt-mvvm/qt-mvvm/mvvm"
+#HEADER_LOCATION = "/home/pospelov/development/qt-mvvm/qt-mvvm/mvvm"
+HEADER_LOCATION = "/home/pospelov/development/DaRefl/DaRefl/source/darefl"
+
 # SOURCE_DIR_TO_MODIFY = "/home/pospelov/development/qt-mvvm/qt-mvvm/examples"
 # SOURCE_DIR_TO_MODIFY = "/home/pospelov/development/qt-mvvm/qt-mvvm/mvvm"
-SOURCE_DIR_TO_MODIFY = "/home/pospelov/development/qt-mvvm/qt-mvvm/tests"
+#SOURCE_DIR_TO_MODIFY = "/home/pospelov/development/qt-mvvm/qt-mvvm/tests"
+SOURCE_DIR_TO_MODIFY = "/home/pospelov/development/DaRefl/DaRefl/tests/testdareflcore"
+
 APPLY_MODIFICATIONS = True
 
 

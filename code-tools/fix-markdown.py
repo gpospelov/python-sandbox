@@ -5,7 +5,8 @@ Fix BornAgain documentation.
 from utils import get_files
 from utils import different_elements_count
 
-SOURCE_DIR_TO_MODIFY = "/home/pospelov/development/BornAgain/BornAgain-website/content"
+# SOURCE_DIR_TO_MODIFY = "/home/pospelov/development/BornAgain/BornAgain-website/content"
+SOURCE_DIR_TO_MODIFY = "/home/pospelov/development/qt-mvvm/qt-mvvm/source/libmvvm_view"
 
 
 def fix_highlight_line(line):
@@ -20,6 +21,12 @@ def fix_cookbook_line(line):
         line = line.replace("cookbook", "examples")
     return line
 
+
+def fix_word_line(line):
+    pattern = "<mvvm_view_export.h>"
+    if pattern in line:
+        line = line.replace(pattern, "<mvvm/view_export.h>")
+    return line
 
 def process_file(filename, func):
     with open(filename, 'r') as fd:
@@ -44,7 +51,14 @@ def fix_cookbook():
         process_file(filename, fix_cookbook_line)
 
 
+def fix_word():
+    sources = get_files(SOURCE_DIR_TO_MODIFY, ".h")
+    for filename in sources:
+        process_file(filename, fix_word_line)
+
+
 if __name__ == '__main__':
     # fix_highlight_shortcode()
-    fix_cookbook()
+#    fix_cookbook()
+    fix_word()
 

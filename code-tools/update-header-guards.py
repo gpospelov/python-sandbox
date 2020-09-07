@@ -1,14 +1,15 @@
 """
 Update header guards in large C++ project basic on folder location.
 """
-from .utils import get_files
-from .utils import different_elements_count
+from utils import get_files
+from utils import different_elements_count
 from pathlib import Path
 import os
 
 
-SOURCE_DIR_TO_MODIFY = "/home/pospelov/development/qt-mvvm/qt-mvvm/source"
-APPLY_MODIFICATIONS = False
+#SOURCE_DIR_TO_MODIFY = "/home/pospelov/development/qt-mvvm/qt-mvvm/source"
+SOURCE_DIR_TO_MODIFY = "/home/pospelov/development/DaRefl/DaRefl/source/darefl"
+APPLY_MODIFICATIONS = True
 
 
 def count_occurrences(lines, pattern):

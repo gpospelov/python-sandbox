@@ -1,14 +1,14 @@
 """
 Updates header section in C++ source files
 """
-from .utils import get_files
-from .utils import different_elements_count
+from utils import get_files
+from utils import different_elements_count
 
 
 NEW_HEADER = [
     u"// ************************************************************************** //",
     u"//",
-    u"//  Model-view-view-model framework for large GUI applications",
+    u"//  Reflectometry simulation software prototype",
     u"//",
     u"//! @license   GNU General Public License v3 or higher (see COPYING)",
     u"//! @authors   see AUTHORS",
@@ -16,7 +16,8 @@ NEW_HEADER = [
     u"// ************************************************************************** //"
     ]
 
-SOURCE_DIR_TO_MODIFY = "/home/pospelov/development/qt-mvvm/qt-mvvm/examples"
+SOURCE_DIR_TO_MODIFY = "/home/pospelov/development/DaRefl/DaRefl/tests"
+# SOURCE_DIR_TO_MODIFY = "/home/pospelov/development/qt-mvvm/qt-mvvm/examples"
 # SOURCE_DIR_TO_MODIFY = "/home/pospelov/development/qt-mvvm/qt-mvvm/tests"
 APPLY_MODIFICATIONS = True
 
