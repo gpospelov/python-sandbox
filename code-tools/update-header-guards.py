@@ -47,7 +47,7 @@ def fix_include_guard(line, new_guard_name):
     for statement in statements:
         if statement in line:
             if "endif" in line:
-                return '{}  // {}'.format(statement, new_guard_name)
+                return '{} // {}'.format(statement, new_guard_name)
             else:
                 return '{} {}'.format(statement, new_guard_name)
     return line
