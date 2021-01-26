@@ -7,8 +7,10 @@ from pathlib import Path
 import os
 
 
-#SOURCE_DIR_TO_MODIFY = "/home/pospelov/development/qt-mvvm/qt-mvvm/source"
-SOURCE_DIR_TO_MODIFY = "/home/pospelov/development/DaRefl/DaRefl/source/darefl"
+DEPTH = 2
+SOURCE_DIR_TO_MODIFY = "/home/pospelov/development/qt-mvvm/qt-mvvm/examples"
+# SOURCE_DIR_TO_MODIFY = "/home/pospelov/development/qt-mvvm/qt-mvvm/source"
+#SOURCE_DIR_TO_MODIFY = "/home/pospelov/development/DaRefl/DaRefl/source/darefl"
 APPLY_MODIFICATIONS = True
 
 
@@ -38,8 +40,10 @@ def construct_header_guard_name(filename):
     parts = Path(os.path.dirname(filename)).parts
     name = os.path.splitext(os.path.basename(filename))[0].replace('-', '')
 
-    result = '{0}_{1}_{2}_H'.format(parts[-2].upper(), parts[-1].upper(), name.upper())
-    return result
+    if DEPTH == 3:
+        return '{0}_{1}_{2}_H'.format(parts[-2].upper(), parts[-1].upper(), name.upper())
+    else:
+        return '{0}_{1}_H'.format(parts[-1].upper(), name.upper())
 
 
 def fix_include_guard(line, new_guard_name):
