@@ -3,30 +3,44 @@ Updates header section in C++ source files
 """
 from utils import get_files
 from utils import different_elements_count
+import os
 
+
+# NEW_HEADER = [
+#     u"// ************************************************************************** //",
+#     u"//",
+#     u"//  Operational Applications UI Foundation",
+#     u"//",
+#     u"// ************************************************************************** //"
+#     ]
 
 NEW_HEADER = [
-    u"// ************************************************************************** //",
-    u"//",
-    u"//  Reflectometry simulation software prototype",
-    u"//",
-    u"//! @license   GNU General Public License v3 or higher (see COPYING)",
-    u"//! @authors   see AUTHORS",
-    u"//",
-    u"// ************************************************************************** //"
-    ]
+    u"/******************************************************************************",
+    u" *",
+    u" * Project       : Operational Applications UI Foundation",
+    u" *",
+    u" * Description   : The model-view-viewmodel library of generic UI components",
+    u" *",
+    u" * Author        : Gennady Pospelov <gennady.pospelov@gmail.com>",
+    u" *",
+    u" *****************************************************************************/"
+]
 
-SOURCE_DIR_TO_MODIFY = "/home/pospelov/development/DaRefl/DaRefl/tests"
-# SOURCE_DIR_TO_MODIFY = "/home/pospelov/development/qt-mvvm/qt-mvvm/examples"
-# SOURCE_DIR_TO_MODIFY = "/home/pospelov/development/qt-mvvm/qt-mvvm/tests"
+
+WORKDIR= "/home/pospelov/development/iter/sequencer-mvvm"
+SOURCES = ["tests/libtestmachinery", "tests/testmvvm_model", "tests/testmvvm_viewmodel", "tests/testmvvm_sequencer", 
+"source/libmvvm_model", "source/libmvvm_viewmodel", "source/libmvvm_sequencer", "examples"]
+
+skip_files = ["AttributeMap.h", "AttributeMap.cpp",  "AttributeMap-tests.cpp", 
+"TreeData.h", "TreeData.cpp", "TreeData-tests.cpp"]
+
 APPLY_MODIFICATIONS = True
-
 
 def get_current_header(lines):
     result = []
     for line in lines:
         print(line)
-        if line.startswith("//"):
+        if line.startswith("//") or line.startswith("/*") or line.startswith(" *"):
             result.append(line)
         else:
             break
@@ -34,6 +48,10 @@ def get_current_header(lines):
 
 
 def process_file(filename):
+    for pattern in skip_files:
+        if pattern in filename:
+            return False
+
     with open(filename, 'r') as fd:
         lines = [line.rstrip('\n') for line in fd]
         current_header = get_current_header(lines)
@@ -57,14 +75,20 @@ def process_file(filename):
     return True
 
 
-def main():
-    sources = get_files(SOURCE_DIR_TO_MODIFY, ".h") + get_files(SOURCE_DIR_TO_MODIFY, ".cpp")
+def fix_folder(dirname):
+    sources = get_files(dirname, ".h") + get_files(dirname, ".cpp")
     files_to_fix = []
     for filename in sources:
         result = process_file(filename)
         if not result:
             files_to_fix.append(filename)
     print("Have to fix files ", files_to_fix)
+
+
+def main():
+    for dir in SOURCES:
+        dirname = os.path.join(WORKDIR, dir)
+        fix_folder(dirname)
 
 
 if __name__ == '__main__':

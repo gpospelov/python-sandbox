@@ -8,7 +8,9 @@ import os
 
 
 DEPTH = 2
-SOURCE_DIR_TO_MODIFY = "/home/pospelov/development/qt-mvvm/qt-mvvm/examples"
+SOURCE_DIR_TO_MODIFY = "/home/pospelov/development/iter/sequencer-mvvm/examples"
+# SOURCE_DIR_TO_MODIFY = "/home/pospelov/development/iter/sequencer-mvvm/source/libmvvm_sequencer"
+#SOURCE_DIR_TO_MODIFY = "/home/pospelov/development/qt-mvvm/qt-mvvm/examples"
 # SOURCE_DIR_TO_MODIFY = "/home/pospelov/development/qt-mvvm/qt-mvvm/source"
 #SOURCE_DIR_TO_MODIFY = "/home/pospelov/development/DaRefl/DaRefl/source/darefl"
 APPLY_MODIFICATIONS = True
